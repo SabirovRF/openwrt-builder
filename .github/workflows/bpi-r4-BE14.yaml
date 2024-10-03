@@ -71,6 +71,30 @@ jobs:
           curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/openssl >> .config
           make defconfig
 
+          # add packages from other users. Temporary
+      - name: Add packages
+        run: |
+          echo "CONFIG_PACKAGE_luci-app-statistics=y" >> .config
+          echo "CONFIG_PACKAGE_collectd-mod-thermal=y" >> .config
+          echo "CONFIG_PACKAGE_parted=y" >> .config
+          echo "CONFIG_PACKAGE_cfdisk=y" >> .config
+          echo "CONFIG_PACKAGE_usbutils=y" >> .config
+          echo "CONFIG_PACKAGE_f2fs-tools=y" >> .config
+          echo "CONFIG_PACKAGE_kmod-fs-f2fs=y" >> .config
+          echo "CONFIG_PACKAGE_kmod-nvme=y" >> .config
+          echo "CONFIG_PACKAGE_block-mount=y" >> .config
+          echo "CONFIG_PACKAGE_uvol=y" >> .config
+          echo "CONFIG_PACKAGE_autopart=y" >> .config
+          echo "CONFIG_PACKAGE_luci-app-samba4=y" >> .config
+          echo "CONFIG_PACKAGE_igmpproxy=y" >> .config
+          echo "CONFIG_PACKAGE_i2c-tools=y" >> .config
+          echo "CONFIG_PACKAGE_i2csfp=y" >> .config
+          echo "CONFIG_PACKAGE_ethtool-full=y" >> .config
+          echo "CONFIG_PACKAGE_pciutils=y" >> .config
+          echo "CONFIG_PACKAGE_luci-proto-openconnect=y" >> .config
+          echo "CONFIG_PACKAGE_adguardhome=y" >> .config
+          echo "CONFIG_PACKAGE_luci-app-pbr=y" >> .config
+
       - name: Remove packages that are marked as modules
         run: |
           grep "=m" .config | grep -v 'CONFIG_PACKAGE_libustream-mbedtls=m' | while read -r line; do module=$(echo "$line" | cut -f1 -d'='); sed -i "s/^$line$/# $module is not set/" .config; done
